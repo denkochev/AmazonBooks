@@ -11,6 +11,17 @@ function App() {
             .then(json => setBooks(json))
     }, []);
 
+    const searchByWord = (event) =>{
+        const word = event.target.value;
+        fetch(env.urlBackend+'/'+word)
+            .then(response => response.json())
+            .then(json => setBooks(json))
+    }
+
+    const sortBy = (event) =>{
+        console.log(event.target.value)
+    }
+
     return (
         <>
             <section className='head-site'>
@@ -19,7 +30,16 @@ function App() {
                 </div>
             </section>
             <div className='for-main-inp'>
-                <input type="text" className='main-inp' required/>
+                <input type="text" className='main-inp' required onChange={searchByWord}/>
+                <div className='main-selector'>
+                    <select name="pets" id="pet-select" onChange={sortBy}>
+                        <option value="">--Please choose an option--</option>
+                        <option value="dog">Title</option>
+                        <option value="cat">Date</option>
+                        <option value="hamster">Page</option>
+                    </select>
+
+                </div>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 <label>Type name book</label>

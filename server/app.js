@@ -16,7 +16,7 @@ app.get('/books', (req, res) => {
     dbConnect
         .collection('books')
         .find({})
-        .limit(10)
+        .limit(20)
         .toArray(function (err, result) {
             if (err) {
                 res.status(400).send('Error fetching listings!');
@@ -32,7 +32,8 @@ app.get('/books/:word', (req, res) => {
 
     dbConnect
         .collection('books')
-        .find({$text: {$search: `${req.params.word}`, $caseSensitive: false}})
+        .find({$text: {$search: `${req.params.word}`, $caseSensitive: true}})
+        .limit(30)
         .toArray(function (err, result) {
             if (err) {
                 res.status(400).send('Error fetching listings!');

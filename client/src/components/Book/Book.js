@@ -1,7 +1,12 @@
 import './Book.css';
+import BookDescription from "../BookDescription/BookDescription";
+import {useState} from "react";
 
-function Book({_id, title, pageCount, publishedDate, shortDescription,authors,categories,moviesOnBook,thumbnailUrl}) {
+function Book({_id, title, pageCount, publishedDate, shortDescription,longDescription,authors,categories,moviesOnBook,thumbnailUrl}) {
     const datetime = new Date(publishedDate);
+    // set modal state
+    const [modalBookDescription, setModalBookDescription] = useState(false);
+    const props = {...arguments[0]};
 
     return (
         <div className="Book">
@@ -11,7 +16,8 @@ function Book({_id, title, pageCount, publishedDate, shortDescription,authors,ca
             <p>{authors.join(' ')}</p>
             <p>{shortDescription}</p>
             <i>{publishedDate ? `${datetime}` : ''}</i>
-            <button>Open book</button>
+            <BookDescription call={modalBookDescription} onDestroy={()=> setModalBookDescription(false)}  {...props}/>
+            <button onClick={()=> setModalBookDescription(true)}>Open book</button>
         </div>
     );
 }

@@ -80,6 +80,37 @@ input:focus ~ .highlight {
     animation:inputHighlighter 0.3s ease;
 }
 
+.main-selector{
+    float: right;
+}
+
+.main-selector select {
+    align-items: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg fill='%233e77aa' viewBox='0 0 13 7' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.5 7a.956.956 0 0 1-.657-.256l-5.57-5.25a.839.839 0 0 1 0-1.237.968.968 0 0 1 1.312 0L6.5 4.888 11.415.257a.968.968 0 0 1 1.313 0 .839.839 0 0 1 0 1.237l-5.572 5.25A.956.956 0 0 1 6.5 7Z'/%3E%3C/svg%3E");
+    background-position: right 12px center;
+    background-repeat: no-repeat,repeat;
+    background-size: 14px 9px;
+    border: 1px solid #d2d2d2;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #221f1f;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 14px;
+    height: 32px;
+    margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    padding-left: 12px;
+    padding-right: 40px;
+    text-align: left;
+    width: 100%;
+}
+
 /* ANIMATIONS ================ */
 @-webkit-keyframes inputHighlighter {
     from { background:#5264AE; }

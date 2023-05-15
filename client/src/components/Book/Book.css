@@ -1,5 +1,5 @@
 .Book {
-    position: relative;
+    /*position: relative;*/
     -webkit-transition: 150ms ease-in-out;
     transition: 150ms ease-in-out;
     transition-property: border, box-shadow;
@@ -28,6 +28,6 @@
 }
 
 .Book img {
-    max-width: 150px;
-    max-height: 150px;
+    /*max-width: 150px;*/
+    /*max-height: 150px;*/
 }
