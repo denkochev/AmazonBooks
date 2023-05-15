@@ -26,7 +26,7 @@ app.get('/books', (req, res) => {
         });
 })
 
-// find word
+// find by word
 app.get('/books/:word', (req, res) => {
     const dbConnect = dbo.getDb();
 
@@ -34,6 +34,29 @@ app.get('/books/:word', (req, res) => {
         .collection('books')
         .find({$text: {$search: `${req.params.word}`, $caseSensitive: true}})
         .limit(30)
+        .toArray(function (err, result) {
+            if (err) {
+                res.status(400).send('Error fetching listings!');
+            } else {
+                res.json(result);
+            }
+        });
+});
+
+// sort database
+app.get('/books/sortby/:opt', (req, res) => {
+    const dbConnect = dbo.getDb();
+
+    const option = req.params.opt;
+
+    const query = {};
+    query[option] = { $exists: true };
+
+    dbConnect
+        .collection('books')
+        .find(query)
+        .limit(30)
+        .sort({ [option]: 1 })
         .toArray(function (err, result) {
             if (err) {
                 res.status(400).send('Error fetching listings!');

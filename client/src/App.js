@@ -19,7 +19,10 @@ function App() {
     }
 
     const sortBy = (event) =>{
-        console.log(event.target.value)
+        const opt = event.target.value;
+        fetch(env.urlBackend+'/sortby/'+opt)
+            .then(response => response.json())
+            .then(json => setBooks(json))
     }
 
     return (
@@ -34,9 +37,9 @@ function App() {
                 <div className='main-selector'>
                     <select name="pets" id="pet-select" onChange={sortBy}>
                         <option value="">--Please choose an option--</option>
-                        <option value="dog">Title</option>
-                        <option value="cat">Date</option>
-                        <option value="hamster">Page</option>
+                        <option value="title">Title</option>
+                        <option value="publishedDate">Date</option>
+                        <option value="pageCount">Page</option>
                     </select>
 
                 </div>
