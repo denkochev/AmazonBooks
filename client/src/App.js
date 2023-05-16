@@ -20,9 +20,19 @@ function App() {
 
     const sortBy = (event) =>{
         const opt = event.target.value;
+        if (!opt) return
+
         fetch(env.urlBackend+'/sortby/'+opt)
             .then(response => response.json())
-            .then(json => setBooks(json))
+            .then(json => setBooks(json));
+    }
+
+    const showDBs = () =>{
+        fetch(env.serv+'/getdatabases')
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+            });
     }
 
     return (
@@ -49,6 +59,9 @@ function App() {
             </div>
             <div className="App">
                 {books.map(el => <Book key={el._id} {...el} />)}
+            </div>
+            <div className='footer'>
+                <button className='foot-btn' onClick={showDBs}><span>Show databases</span></button>
             </div>
         </>
     );

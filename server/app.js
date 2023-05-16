@@ -2,11 +2,14 @@ const express = require('express');
 // get MongoDB driver connection
 const dbo = require('./db/connection');
 const cors = require('cors');
+// get function for show dbs
+const showDBs = require('./db/showDatabases');
 
 const PORT = 5050;
 const app = express();
 
 app.use(cors());
+// middleware method
 app.use(express.json());
 
 // get all words from collection
@@ -50,13 +53,13 @@ app.get('/books/sortby/:opt', (req, res) => {
     const option = req.params.opt;
 
     const query = {};
-    query[option] = { $exists: true };
+    query[option] = {$exists: true};
 
     dbConnect
         .collection('books')
         .find(query)
         .limit(30)
-        .sort({ [option]: 1 })
+        .sort({[option]: 1})
         .toArray(function (err, result) {
             if (err) {
                 res.status(400).send('Error fetching listings!');
@@ -82,6 +85,17 @@ app.post('/words/add', (req, res) => {
                 res.status(204).send('new word added successfully');
             }
         });
+});
+
+
+// show all databases
+app.get('/getdatabases', async (req, res) => {
+    const databases = await showDBs.showDatabases()
+        .catch(err => {
+            res.status(400).send('ПОМИЛКА ДОСТУПУ! '+err);
+        });
+
+    res.status(200).json(databases)
 });
 
 // perform a database connection when the server starts
