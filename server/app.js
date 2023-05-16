@@ -20,7 +20,7 @@ app.get('/books', (req, res) => {
     dbConnect
         .collection('books')
         .find({})
-        .limit(20)
+        .limit(30)
         .toArray(function (err, result) {
             if (err) {
                 res.status(400).send('Error fetching listings!');

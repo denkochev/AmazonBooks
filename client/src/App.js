@@ -4,6 +4,17 @@ import {useEffect, useState} from "react";
 
 function App() {
     const [books, setBooks] = useState([]);
+    const [checkedIDs, setcheckedIDs] = useState([]);
+
+    // handle checked checkbox from components Book
+    const handleCheckedIDs = (idChecked, isChecked) => {
+        if (isChecked) {
+            setcheckedIDs([...checkedIDs, idChecked]);
+        } else {
+            const unCheckedValues = checkedIDs.filter(id => idChecked !== id);
+            setcheckedIDs(unCheckedValues);
+        }
+    };
 
     useEffect(() => {
         fetch(env.urlBackend)
@@ -11,40 +22,57 @@ function App() {
             .then(json => setBooks(json))
     }, []);
 
-    const searchByWord = (event) =>{
+    const searchByWord = (event) => {
         const word = event.target.value;
-        fetch(env.urlBackend+'/'+word)
+        fetch(env.urlBackend + '/' + word)
             .then(response => response.json())
             .then(json => setBooks(json))
     }
 
-    const sortBy = (event) =>{
+    const sortBy = (event) => {
         const opt = event.target.value;
         if (!opt) {
             fetch(env.urlBackend)
                 .then(response => response.json())
                 .then(json => setBooks(json))
         } else {
-            fetch(env.urlBackend+'/sortby/'+opt)
+            fetch(env.urlBackend + '/sortby/' + opt)
                 .then(response => response.json())
                 .then(json => setBooks(json));
         }
     }
 
-    const showDBs = () =>{
-        fetch(env.serv+'/getdatabases')
+    const showDBs = () => {
+        fetch(env.serv + '/getdatabases')
             .then(response => response.json())
             .then(json => {
                 console.log(json);
             });
     }
 
-    const showCollections = () =>{
-        fetch(env.serv+'/getcollections')
+    const showCollections = () => {
+        fetch(env.serv + '/getcollections')
             .then(response => response.json())
             .then(json => {
                 console.log(json);
             });
+    }
+
+    const deleteMany = () => {
+        fetch(env.urlBackend + '/deletemany', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(checkedIDs)
+        }).then(response => response.json())
+            .then(json => {
+                console.log(json);
+            }).then(
+            fetch(env.urlBackend)
+                .then(response => response.json())
+                .then(json => setBooks(json))
+        )
     }
 
     return (
@@ -71,9 +99,10 @@ function App() {
                 </div>
             </div>
             <div className="App">
-                {books.map(el => <Book key={el._id} {...el} />)}
+                {books.map(el => <Book key={el._id} {...el} onCheckboxChange={handleCheckedIDs}/>)}
             </div>
             <div className='footer'>
+                <button className='foot-btn' onClick={deleteMany}><span>Delete selected</span></button>
                 <button className='foot-btn' onClick={showDBs}><span>Show databases</span></button>
                 <button className='foot-btn' onClick={showCollections}><span>Show collections</span></button>
             </div>
