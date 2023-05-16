@@ -4,6 +4,7 @@ const dbo = require('./db/connection');
 const cors = require('cors');
 // get function for show dbs
 const showDBs = require('./db/showDatabases');
+const { ObjectId } = require('mongodb');
 
 const PORT = 5050;
 const app = express();
@@ -83,6 +84,24 @@ app.post('/words/add', (req, res) => {
             } else {
                 console.log(`Added a new match with id ${result.insertedId}`);
                 res.status(204).send('new word added successfully');
+            }
+        });
+});
+
+// delete documents from collection
+app.delete('/books/deletemany',(req,res)=>{
+    const dbConnect = dbo.getDb();
+
+    const idArray = req.body;
+    const objectIds = idArray.map(id => new ObjectId(id));
+
+    dbConnect
+        .collection('books')
+        .deleteMany({_id:{$in:objectIds}}, function (err, result) {
+            if (err) {
+                res.status(400).send('Error fetching listings!');
+            } else {
+                res.json(result);
             }
         });
 });

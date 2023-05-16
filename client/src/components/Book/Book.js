@@ -19,7 +19,7 @@ function Book({_id, title, pageCount, publishedDate, shortDescription,longDescri
             <img src={thumbnailUrl} alt=""/>
             <h2>{title}</h2>
             <p>{pageCount?pageCount+' ст.':null}</p>
-            <p>{authors.join(' ')}</p>
+            <p>{authors?authors.join(' '):null}</p>
             <p>{shortDescription}</p>
             <i>{publishedDate ? `${datetime}` : ''}</i>
             <BookDescription call={modalBookDescription} onDestroy={()=> setModalBookDescription(false)}  {...props}/>

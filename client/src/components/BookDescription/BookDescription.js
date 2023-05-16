@@ -32,7 +32,7 @@ function BookDescription({
                 <h1>{title}</h1>
                 <h3>ISBN: {isbn}</h3>
                 <h2>Кількість сторінок:</h2><p>{pageCount} ст.</p>
-                <h2>Автори:</h2><p>{authors.join(', ')}</p>
+                <h2>Автори:</h2><p>{authors?authors.join(', '):null}</p>
                 <h2>Дата публікації:</h2><p>{publishedDate ? `${datetime}` : 'інформація відсутня'}</p>
                 <h2>Категорії</h2><p>{categories.join(', ')}</p>
                 <h2>Опис:</h2><p>{longDescription}</p>
