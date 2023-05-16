@@ -114,6 +114,7 @@ input:focus ~ .highlight {
 .footer {
     margin: 5px;
     padding: 10px;
+    display: flex;
 }
 
 .footer button{
@@ -125,6 +126,7 @@ input:focus ~ .highlight {
     font-weight: bold;
     border: none;
     border-radius: var(--button_radius);
+    margin:5px;
 }
 
 .foot-btn {

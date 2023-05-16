@@ -98,6 +98,23 @@ app.get('/getdatabases', async (req, res) => {
     res.status(200).json(databases)
 });
 
+// get collections from db
+app.get('/getcollections', (req, res) => {
+    const dbConnect = dbo.getDb();
+
+    dbConnect.listCollections().toArray((err, collections) => {
+        if (err) {
+            console.error('Помилка отримання списку колекцій:', err);
+            res.status(500).send('Помилка сервера');
+            return;
+        }
+
+        // Отправка списку колекцій у відповідь
+        const collectionNames = collections.map(collection => collection.name);
+        res.json(collectionNames);
+    });
+});
+
 // perform a database connection when the server starts
 dbo.connectToServer(function (err) {
     if (err) {

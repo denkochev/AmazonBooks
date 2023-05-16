@@ -10,7 +10,12 @@ function Book({_id, title, pageCount, publishedDate, shortDescription,longDescri
 
     return (
         <div className="Book">
-            <input type="checkbox"/>
+
+            <label className="container">
+                <input type="checkbox" />
+                    <span className="checkmark"></span>
+            </label>
+
             <img src={thumbnailUrl} alt=""/>
             <h2>{title}</h2>
             <p>{pageCount?pageCount+' ст.':null}</p>

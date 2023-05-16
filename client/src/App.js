@@ -20,15 +20,27 @@ function App() {
 
     const sortBy = (event) =>{
         const opt = event.target.value;
-        if (!opt) return
-
-        fetch(env.urlBackend+'/sortby/'+opt)
-            .then(response => response.json())
-            .then(json => setBooks(json));
+        if (!opt) {
+            fetch(env.urlBackend)
+                .then(response => response.json())
+                .then(json => setBooks(json))
+        } else {
+            fetch(env.urlBackend+'/sortby/'+opt)
+                .then(response => response.json())
+                .then(json => setBooks(json));
+        }
     }
 
     const showDBs = () =>{
         fetch(env.serv+'/getdatabases')
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+            });
+    }
+
+    const showCollections = () =>{
+        fetch(env.serv+'/getcollections')
             .then(response => response.json())
             .then(json => {
                 console.log(json);
@@ -44,6 +56,10 @@ function App() {
             </section>
             <div className='for-main-inp'>
                 <input type="text" className='main-inp' required onChange={searchByWord}/>
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>What book do you want</label>
+
                 <div className='main-selector'>
                     <select name="pets" id="pet-select" onChange={sortBy}>
                         <option value="">--Please choose an option--</option>
@@ -53,15 +69,13 @@ function App() {
                     </select>
 
                 </div>
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label>Type name book</label>
             </div>
             <div className="App">
                 {books.map(el => <Book key={el._id} {...el} />)}
             </div>
             <div className='footer'>
                 <button className='foot-btn' onClick={showDBs}><span>Show databases</span></button>
+                <button className='foot-btn' onClick={showCollections}><span>Show collections</span></button>
             </div>
         </>
     );
