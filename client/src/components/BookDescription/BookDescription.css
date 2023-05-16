@@ -15,14 +15,15 @@
 }
 
 .modal-content{
+    overflow-y: auto;
     max-width: 950px;
-    max-height: 900px;
+    max-height: 700px;
     width: 100%;
     position: fixed;
-    top: 50%;
+    top: 60%;
     left: 50%;
     background-color: rgb(249, 250, 251);
-    transform: translate(-50%,-50%);
+    transform: translate(-50%,-60%);
     padding: 1rem;
     border-radius: 15px;
 }
