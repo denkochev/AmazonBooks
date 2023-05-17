@@ -70,20 +70,27 @@ app.get('/books/sortby/:opt', (req, res) => {
         });
 });
 
-// add new document to the collection
-app.post('/words/add', (req, res) => {
+// add new books to the collection
+app.post('/books/add', (req, res) => {
+    if(!req.body){
+        res.status(400).send('Error inserting matches!');
+    }
+
+    // manage publishedDate key to ISO standart
+    const newBooks = req.body.map((book)=>{
+        ("publishedDate" in book)? book.publishedDate = new Date(book.publishedDate) : null;
+        return book;
+    });
+
     const dbConnect = dbo.getDb();
-    let newDocument = req.body;
-    newDocument.date = new Date();
 
     dbConnect
-        .collection('words')
-        .insertOne(newDocument, function (err, result) {
+        .collection('books')
+        .insertMany(newBooks, function (err, result) {
             if (err) {
                 res.status(400).send('Error inserting matches!');
             } else {
-                console.log(`Added a new match with id ${result.insertedId}`);
-                res.status(204).send('new word added successfully');
+                res.send(result);
             }
         });
 });

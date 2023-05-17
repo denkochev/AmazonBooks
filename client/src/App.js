@@ -1,4 +1,5 @@
 import Book from './components/Book/Book';
+import AddNewBooks from "./components/AddNewBooks/AddNewBooks";
 import env from './credentials/env.json';
 import {useEffect, useState} from "react";
 
@@ -6,6 +7,7 @@ function App() {
     const [books, setBooks] = useState([]);
     const [checkedIDs, setCheckedIDs] = useState([]);
     const [mainInpValue,setMainInpValue] = useState('');
+    const [addNewBooksStatus,setAddNewBooksStatus] = useState(false);
 
     // handle checked checkbox from components Book
     const handleCheckedIDs = (idChecked, isChecked) => {
@@ -100,6 +102,12 @@ function App() {
         )
     }
 
+    const editDone = () =>{
+        fetch(env.urlBackend + '/' + mainInpValue)
+            .then(response => response.json())
+            .then(json => setBooks(json));
+    }
+
     return (
         <>
             <section className='head-site'>
@@ -124,10 +132,12 @@ function App() {
                 </div>
             </div>
             <div className="App">
-                {books.map(el => <Book key={el._id} {...el} onCheckboxChange={handleCheckedIDs} onDelete={deleteOne}/>)}
+                {books.map(el => <Book key={el._id} {...el} onCheckboxChange={handleCheckedIDs} onDelete={deleteOne} onEdit={editDone}/>)}
             </div>
+            <AddNewBooks onCreate={addNewBooksStatus} onDestroy={()=>setAddNewBooksStatus(false)}/>
             <div className='footer'>
                 <button className='foot-btn' onClick={deleteMany}><span>Delete selected</span></button>
+                <button className='foot-btn' onClick={()=>setAddNewBooksStatus(true)}><span>Add new book</span></button>
                 <button className='foot-btn' onClick={showDBs}><span>Show databases</span></button>
                 <button className='foot-btn' onClick={showCollections}><span>Show collections</span></button>
             </div>

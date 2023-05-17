@@ -17,7 +17,8 @@ function BookDescription({
                              moviesOnBook,
                              thumbnailUrl,
                              status,
-                             onDelete
+                             onDelete,
+                             onEdit
                          }) {
     const datetime = new Date(publishedDate);
     // preparing object for editor
@@ -27,6 +28,7 @@ function BookDescription({
     delete props.onDelete;
     delete props.onDestroy;
     delete props.onCheckboxChange;
+    delete props.onEdit;
 
     const [editor, setEditor] = useState(false);
     const [editorValue, setEditorValue] = useState(JSON.stringify(props, null, 2));
@@ -44,14 +46,19 @@ function BookDescription({
     };
 
     // query method for edit book
-    const editDocument = () =>{
-        fetch(env.urlBackend + '/update/'+_id, {
+    const editDocument = () => {
+        fetch(env.urlBackend + '/update/' + _id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(editorValue)
-        }).then(response =>  console.log(response.json()))
+            body: editorValue
+        }).then(response => response.json())
+            .then(res => console.log(res))
+            .then(()=>{
+                onEdit();
+                onDestroy()
+            })
     }
 
     return (
@@ -83,7 +90,7 @@ function BookDescription({
                     </>
                 ) : null}
                 <div className="btns">
-                    <button className='edit' onClick={ () => setEditor(!editor) }>Редагувати</button>
+                    <button className='edit' onClick={() => setEditor(!editor)}>Редагувати</button>
                     <button className='accept' onClick={() => {
                         onDelete(_id);
                         onDestroy();
