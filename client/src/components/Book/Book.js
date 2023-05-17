@@ -29,7 +29,7 @@ function Book({_id, title, pageCount, publishedDate, shortDescription,longDescri
             <p>{authors?authors.join(' '):null}</p>
             <p>{shortDescription}</p>
             <i>{publishedDate ? `${datetime}` : ''}</i>
-            <BookDescription call={modalBookDescription} onDestroy={()=> setModalBookDescription(false)}  {...props}/>
+            <BookDescription onCreate={modalBookDescription} onDestroy={()=> setModalBookDescription(false)}  {...props}/>
             <button onClick={()=> setModalBookDescription(true)}>Open book</button>
         </div>
     );

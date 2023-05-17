@@ -4,16 +4,16 @@ import {useEffect, useState} from "react";
 
 function App() {
     const [books, setBooks] = useState([]);
-    const [checkedIDs, setcheckedIDs] = useState([]);
+    const [checkedIDs, setCheckedIDs] = useState([]);
     const [mainInpValue,setMainInpValue] = useState('');
 
     // handle checked checkbox from components Book
     const handleCheckedIDs = (idChecked, isChecked) => {
         if (isChecked) {
-            setcheckedIDs([...checkedIDs, idChecked]);
+            setCheckedIDs([...checkedIDs, idChecked]);
         } else {
             const unCheckedValues = checkedIDs.filter(id => idChecked !== id);
-            setcheckedIDs(unCheckedValues);
+            setCheckedIDs(unCheckedValues);
         }
     };
 
@@ -24,9 +24,10 @@ function App() {
     }, []);
 
     const searchByWord = (event) => {
-        setMainInpValue(event.target.value)
-        //const word = event.target.value;
-        fetch(env.urlBackend + '/' + mainInpValue)
+        const inp = event.target.value;
+        setMainInpValue(inp);
+
+        fetch(env.urlBackend + '/' + inp)
             .then(response => response.json())
             .then(json => setBooks(json))
     }
@@ -70,11 +71,32 @@ function App() {
         }).then(response => response.json())
             .then(json => {
                 console.log(json);
-                setBooks([]);
-            }).then(
-            fetch(env.urlBackend + '/' + mainInpValue)
-                .then(response => response.json())
-                .then(json => setBooks(json))
+            }).then( ()=>{
+                fetch(env.urlBackend + '/' + mainInpValue)
+                    .then(response => response.json())
+                    .then(json => setBooks(json))
+            }
+        )
+    }
+
+    // props func for deleting one book from modal window
+    const deleteOne = (id) =>{
+        if(!id) return
+        const forDeleting = [id];
+        fetch(env.urlBackend + '/deletemany', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(forDeleting)
+        }).then(response => response.json())
+            .then(json => {
+                console.log(json);
+            }).then( ()=>{
+                fetch(env.urlBackend + '/' + mainInpValue)
+                    .then(response => response.json())
+                    .then(json => setBooks(json))
+            }
         )
     }
 
@@ -86,7 +108,7 @@ function App() {
                 </div>
             </section>
             <div className='for-main-inp'>
-                <input type="text" className='main-inp' required onChange={searchByWord}/>
+                <input type="text" className='main-inp' onChange={searchByWord} value={mainInpValue}/>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 <label>What book do you want</label>
@@ -102,7 +124,7 @@ function App() {
                 </div>
             </div>
             <div className="App">
-                {books.map(el => <Book key={el._id} {...el} onCheckboxChange={handleCheckedIDs}/>)}
+                {books.map(el => <Book key={el._id} {...el} onCheckboxChange={handleCheckedIDs} onDelete={deleteOne}/>)}
             </div>
             <div className='footer'>
                 <button className='foot-btn' onClick={deleteMany}><span>Delete selected</span></button>

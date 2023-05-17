@@ -28,8 +28,14 @@
     border-radius: 15px;
 }
 
+.btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 .btns button{
-    width: 100%;
+    width: 30%;
     margin: 0.3rem;
     padding: 10px;
     font-weight: 600;
@@ -37,12 +43,12 @@
     border: 1px solid;
 }
 
-.accept{
+.accept, .edit{
     color: #ffff;
     background-color: rgb(42,102,188);
 }
 
-.accept:hover{
+.accept:hover, .edit:hover{
     background-color: rgb(14,71,149);
 }
 
@@ -62,4 +68,8 @@
 
 .modal p{
     font-size: 14px;
+}
+
+.editor-text-area textarea {
+    width: 90%;
 }

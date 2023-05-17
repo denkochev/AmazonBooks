@@ -4,7 +4,7 @@ const dbo = require('./db/connection');
 const cors = require('cors');
 // get function for show dbs
 const showDBs = require('./db/showDatabases');
-const { ObjectId } = require('mongodb');
+const {ObjectId} = require('mongodb');
 
 const PORT = 5050;
 const app = express();
@@ -47,7 +47,7 @@ app.get('/books/:word', (req, res) => {
         });
 });
 
-// sort database
+// sort collection
 app.get('/books/sortby/:opt', (req, res) => {
     const dbConnect = dbo.getDb();
 
@@ -88,16 +88,48 @@ app.post('/words/add', (req, res) => {
         });
 });
 
-// delete documents from collection
-app.delete('/books/deletemany',(req,res)=>{
+// edit document in collection
+app.put('/books/update/:id', (req, res) => {
+
+    if(!req.body){
+        res.status(400).send('Error fetching listings!');
+        return;
+    }
+
     const dbConnect = dbo.getDb();
 
-    const idArray = req.body;
-    const objectIds = idArray.map(id => new ObjectId(id));
+    const id = (isNaN(req.params.id)) ? new ObjectId(req.params.id) : Number(req.params.id);
+    const editedBook = req.body;
+
+    ("publishedDate" in editedBook)? editedBook.publishedDate = new Date(editedBook.publishedDate) : null;
 
     dbConnect
         .collection('books')
-        .deleteMany({_id:{$in:objectIds}}, function (err, result) {
+        .replaceOne({_id: id}, editedBook, function (err, result) {
+            if (err) {
+                res.status(400).send('Error fetching listings!');
+            } else {
+                res.json(result);
+            }
+        });
+});
+
+// delete documents from collection
+app.delete('/books/deletemany', (req, res) => {
+    const dbConnect = dbo.getDb();
+
+    const idArray = req.body;
+    const objectIds = idArray.map(id => {
+        if (typeof id === 'number') {
+            return id;
+        } else if (typeof id === 'string') {
+            return new ObjectId(id);
+        }
+    });
+
+    dbConnect
+        .collection('books')
+        .deleteMany({_id: {$in: objectIds}}, function (err, result) {
             if (err) {
                 res.status(400).send('Error fetching listings!');
             } else {
@@ -111,7 +143,7 @@ app.delete('/books/deletemany',(req,res)=>{
 app.get('/getdatabases', async (req, res) => {
     const databases = await showDBs.showDatabases()
         .catch(err => {
-            res.status(400).send('ПОМИЛКА ДОСТУПУ! '+err);
+            res.status(400).send('ПОМИЛКА ДОСТУПУ! ' + err);
         });
 
     res.status(200).json(databases)
