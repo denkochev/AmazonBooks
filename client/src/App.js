@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 function App() {
     const [books, setBooks] = useState([]);
     const [checkedIDs, setcheckedIDs] = useState([]);
+    const [mainInpValue,setMainInpValue] = useState('');
 
     // handle checked checkbox from components Book
     const handleCheckedIDs = (idChecked, isChecked) => {
@@ -23,8 +24,9 @@ function App() {
     }, []);
 
     const searchByWord = (event) => {
-        const word = event.target.value;
-        fetch(env.urlBackend + '/' + word)
+        setMainInpValue(event.target.value)
+        //const word = event.target.value;
+        fetch(env.urlBackend + '/' + mainInpValue)
             .then(response => response.json())
             .then(json => setBooks(json))
     }
@@ -68,8 +70,9 @@ function App() {
         }).then(response => response.json())
             .then(json => {
                 console.log(json);
+                setBooks([]);
             }).then(
-            fetch(env.urlBackend)
+            fetch(env.urlBackend + '/' + mainInpValue)
                 .then(response => response.json())
                 .then(json => setBooks(json))
         )
