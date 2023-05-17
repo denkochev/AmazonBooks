@@ -14,11 +14,10 @@ code {
 
 .App {
     margin: unset;
-    font-family: 'Euclid Circular A', Akzidenz, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Times New Roman', serif;
     font-weight: 400;
     font-size: 48px;
     line-height: 62px;
-    font-family: 'Times New Roman', serif;
     color: rgb(53, 28, 117);
 }
 

@@ -1,5 +1,6 @@
 import './BookDescription.css';
 import {useState, useRef} from 'react';
+import env from "../../credentials/env.json";
 
 function BookDescription({
                              onCreate,
@@ -42,6 +43,17 @@ function BookDescription({
         textarea.style.height = `${textarea.scrollHeight}px`; // Встановлюємо висоту залежно від змісту
     };
 
+    // query method for edit book
+    const editDocument = () =>{
+        fetch(env.urlBackend + '/update/'+_id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(editorValue)
+        }).then(response =>  console.log(response.json()))
+    }
+
     return (
         <div className='modal'>
             <div className="modal-content">
@@ -66,6 +78,7 @@ function BookDescription({
                             <textarea value={editorValue} ref={textareaRef}
                                       onClick={handleTAreaSize}
                                       onChange={(inp) => setEditorValue(inp.target.value)}/>
+                            <button onClick={editDocument}>Save changes</button>
                         </div>
                     </>
                 ) : null}
