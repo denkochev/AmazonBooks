@@ -1,6 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 async function showDatabases() {
+    // SET YOUR LOCAL URL
     const url = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.1";
     const client = new MongoClient(url);
 

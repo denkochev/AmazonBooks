@@ -43,7 +43,7 @@ function AddNewBooks({ onCreate, onDestroy }){
             body: newBooks
         }).then(response => response.json())
             .then((req)=>console.log(req))
-
+            .then(()=> onDestroy())
     }
 
     return (
