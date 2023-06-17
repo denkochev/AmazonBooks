@@ -23,7 +23,7 @@ function Book({_id, title, pageCount, publishedDate, shortDescription,longDescri
                     <span className="checkmark"></span>
             </label>
 
-            <img src={thumbnailUrl} alt=""/>
+            {thumbnailUrl?<img src={thumbnailUrl} style={{height:"230px"}} alt=""/> : null }
             <h2>{title}</h2>
             <p>{pageCount?pageCount+' ст.':null}</p>
             <p>{authors?authors.join(' '):null}</p>
