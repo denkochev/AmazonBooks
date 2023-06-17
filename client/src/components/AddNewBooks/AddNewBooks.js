@@ -1,6 +1,5 @@
 import './AddNewBooks.css';
 import {useState} from 'react';
-import env from "../../credentials/env.json";
 
 const template = [	{
     "title": "",
@@ -20,7 +19,7 @@ const template = [	{
 }]
 
 function AddNewBooks({ onCreate, onDestroy }){
-
+    const urlBackend = process.env.REACT_APP_URL_BACK;
     const [newBooks,setNewBooks] = useState(JSON.stringify(template, null, 2));
 
     if(!onCreate){
@@ -35,7 +34,7 @@ function AddNewBooks({ onCreate, onDestroy }){
 
     // method for new books adding query
     const addNewBooks = () =>{
-        fetch(env.urlBackend + '/add', {
+        fetch(urlBackend + '/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

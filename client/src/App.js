@@ -1,9 +1,10 @@
 import Book from './components/Book/Book';
 import AddNewBooks from "./components/AddNewBooks/AddNewBooks";
-import env from './credentials/env.json';
 import {useEffect, useState} from "react";
 
 function App() {
+    const urlBackend = process.env.REACT_APP_URL_BACK;
+    const server = process.env.REACT_APP_SERVER;
     const [books, setBooks] = useState([]);
     const [checkedIDs, setCheckedIDs] = useState([]);
     const [mainInpValue,setMainInpValue] = useState('');
@@ -20,16 +21,16 @@ function App() {
     };
 
     useEffect(() => {
-        fetch(env.urlBackend)
+        fetch(urlBackend)
             .then(response => response.json())
             .then(json => setBooks(json))
-    }, []);
+    }, [urlBackend]);
 
     const searchByWord = (event) => {
         const inp = event.target.value;
         setMainInpValue(inp);
 
-        fetch(env.urlBackend + '/' + inp)
+        fetch(urlBackend + '/' + inp)
             .then(response => response.json())
             .then(json => setBooks(json))
     }
@@ -37,18 +38,18 @@ function App() {
     const sortBy = (event) => {
         const opt = event.target.value;
         if (!opt) {
-            fetch(env.urlBackend)
+            fetch(urlBackend)
                 .then(response => response.json())
                 .then(json => setBooks(json))
         } else {
-            fetch(env.urlBackend + '/sortby/' + opt)
+            fetch(urlBackend + '/sortby/' + opt)
                 .then(response => response.json())
                 .then(json => setBooks(json));
         }
     }
 
     const showDBs = () => {
-        fetch(env.serv + '/getdatabases')
+        fetch(server + '/getdatabases')
             .then(response => response.json())
             .then(json => {
                 console.log(json);
@@ -56,7 +57,7 @@ function App() {
     }
 
     const showCollections = () => {
-        fetch(env.serv + '/getcollections')
+        fetch(server + '/getcollections')
             .then(response => response.json())
             .then(json => {
                 console.log(json);
@@ -64,7 +65,7 @@ function App() {
     }
 
     const deleteMany = () => {
-        fetch(env.urlBackend + '/deletemany', {
+        fetch(urlBackend + '/deletemany', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,7 +75,7 @@ function App() {
             .then(json => {
                 console.log(json);
             }).then( ()=>{
-                fetch(env.urlBackend + '/' + mainInpValue)
+                fetch(urlBackend + '/' + mainInpValue)
                     .then(response => response.json())
                     .then(json => setBooks(json))
                     .then(()=>setCheckedIDs([]));
@@ -86,7 +87,7 @@ function App() {
     const deleteOne = (id) =>{
         if(!id) return
         const forDeleting = [id];
-        fetch(env.urlBackend + '/deletemany', {
+        fetch(urlBackend + '/deletemany', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -96,7 +97,7 @@ function App() {
             .then(json => {
                 console.log(json);
             }).then( ()=>{
-                fetch(env.urlBackend + '/' + mainInpValue)
+                fetch(urlBackend + '/' + mainInpValue)
                     .then(response => response.json())
                     .then(json => setBooks(json))
             }
@@ -104,7 +105,7 @@ function App() {
     }
 
     const editDone = () =>{
-        fetch(env.urlBackend + '/' + mainInpValue)
+        fetch(urlBackend + '/' + mainInpValue)
             .then(response => response.json())
             .then(json => setBooks(json));
     }
