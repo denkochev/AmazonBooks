@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express');
 // get MongoDB driver connection
 const dbo = require('./db/connection');
@@ -6,12 +7,11 @@ const cors = require('cors');
 const showDBs = require('./db/showDatabases');
 const {ObjectId} = require('mongodb');
 
-const PORT = 5050;
+const PORT = process.env.PORT;
 const app = express();
 
-app.use(cors());
-// middleware method
-app.use(express.json());
+// middleware methods
+app.use(cors(),express.json());
 
 // get all words from collection
 app.get('/books', (req, res) => {
@@ -97,7 +97,7 @@ app.post('/books/add', (req, res) => {
 
 // edit document in collection
 app.put('/books/update/:id', (req, res) => {
-
+    console.log(req.body)
     if(!req.body){
         res.status(400).send('Error fetching listings!');
         return;
