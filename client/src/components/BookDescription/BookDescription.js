@@ -1,6 +1,5 @@
 import './BookDescription.css';
 import {useState, useRef} from 'react';
-import env from "../../credentials/env.json";
 
 function BookDescription({
                              onCreate,
@@ -20,6 +19,7 @@ function BookDescription({
                              onDelete,
                              onEdit
                          }) {
+    const urlBackend = process.env.REACT_APP_URL_BACK;
     const datetime = new Date(publishedDate);
     // preparing object for editor
     const props = {...arguments[0]};
@@ -47,7 +47,7 @@ function BookDescription({
 
     // query method for edit book
     const editDocument = () => {
-        fetch(env.urlBackend + '/update/' + _id, {
+        fetch(urlBackend + '/update/' + _id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
