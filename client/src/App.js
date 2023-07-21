@@ -3,7 +3,8 @@ import AddNewBooks from "./components/AddNewBooks/AddNewBooks";
 import {useEffect, useState} from "react";
 
 function App() {
-    const urlBackend = process.env.REACT_APP_URL_BACK;
+    const urlBackend = process.env.REACT_APP_URL_BACKEND;
+    console.log(urlBackend)
     const server = process.env.REACT_APP_SERVER;
     const [books, setBooks] = useState([]);
     const [checkedIDs, setCheckedIDs] = useState([]);
